@@ -3,10 +3,7 @@ package com.example.empresta_iii;
 import java.util.ArrayList;
 import java.util.Locale;
 
-
-
 import classes.*;
-
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,10 +14,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
+
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
@@ -164,14 +166,13 @@ public class MainActivity extends FragmentActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.layout_fragment_coisa, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.txtListaDeCoisas);
-            dummyTextView.setText("esta lista de coisas funciona?");
+            
             
             arrayCoisas.add(new Coisa("Sofá", arrayAmigos.get(2).getNome(), true));
-            arrayCoisas.add(new Coisa("Sofá", arrayAmigos.get(2).getNome(), true));
-            arrayCoisas.add(new Coisa("Sofá", "", false));
-            arrayCoisas.add(new Coisa("Sofá", arrayAmigos.get(2).getNome(), true));
-            arrayCoisas.add(new Coisa("Sofá", "", false));
+            arrayCoisas.add(new Coisa("Bola", arrayAmigos.get(2).getNome(), true));
+            arrayCoisas.add(new Coisa("Video Game", "", false));
+            arrayCoisas.add(new Coisa("Tamburete", arrayAmigos.get(2).getNome(), true));
+            arrayCoisas.add(new Coisa("Imbira", "", false));
             
             ListView lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
     		CoisasAdapter coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
@@ -183,18 +184,19 @@ public class MainActivity extends FragmentActivity {
         }
     }
     
-    public static class AmigoFragment extends Fragment {
+    public static class AmigoFragment extends Fragment implements OnItemClickListener {
     	
     	
         public AmigoFragment() {
         }
+        
+        View rootView = null;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.layout_fragment_amigo, container, false);
-            TextView txtAmigo = (TextView) rootView.findViewById(R.id.txtLblListaDeAmigos);
-            txtAmigo.setText("esta lista funciona?");
+            this.rootView = inflater.inflate(R.layout.layout_fragment_amigo, container, false);
+            
             
             arrayAmigos.add(new Amigo("jose"));
             arrayAmigos.add(new Amigo("joao"));
@@ -206,16 +208,29 @@ public class MainActivity extends FragmentActivity {
             ListView lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
     		AmigosAdapter amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
     		lvAmigos.setAdapter(amigosAdapter);	
-//    		lvAmigos.setOnItemClickListener(this);
-//    		amigosAdapter.notifyDataSetChanged();
-            
-            
-            
+     		lvAmigos.setOnItemClickListener(this);
+    		amigosAdapter.notifyDataSetChanged();
             
             
             
             return rootView;
         }
+        
+        public void adicionarAmigo(View vrView)
+    	{
+    		 
+    		 return;
+    	}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View view, int position,
+				long arg3) {
+			
+			TextView vrTextViewNomeAmigo = (TextView)view.findViewById(R.id.txtNomeAmigo);
+			Toast.makeText(this.rootView.getContext(), vrTextViewNomeAmigo.getText(), Toast.LENGTH_SHORT).show();
+			
+		}
+        
     }
 
 
