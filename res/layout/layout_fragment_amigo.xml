@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/txtLblListaDeAmigos"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content"        
         android:text="Lista de Amigos" />
 
     <ListView
@@ -21,12 +21,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <EditText
+            android:id="@+id/txtAmigoNomeAdicionar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:hint="Adicionar Amigo"
+            android:layout_toLeftOf="@+id/btnAdicionarAmigo"
+            android:ems="10" />
+
         <ImageButton
             android:id="@+id/btnAdicionarAmigo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:onClick="adicionarAmigo"
             android:src="@drawable/ic_person_add_black_18dp" />
 
     </RelativeLayout>

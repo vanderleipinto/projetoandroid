@@ -39,7 +39,7 @@ public class AmigosAdapter extends ArrayAdapter<Amigo> {
 			//Seta as propriedades da view
 			vrTextViewNomeAmigo.setText(vrAmigo.getNome());
 			if (indice % 2 == 0)
-				viewReciclada.setBackgroundColor(Color.GRAY);
+				viewReciclada.setBackgroundColor(Color.LTGRAY);
 			else
 				viewReciclada.setBackgroundColor(Color.WHITE);
 			

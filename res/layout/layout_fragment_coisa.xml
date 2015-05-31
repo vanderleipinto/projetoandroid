@@ -3,18 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+	
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_alignParentTop="true"
+            >
 
-    <TextView
-        android:id="@+id/txtListaDeCoisas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lista de coisas" />
+        <TextView
+            android:id="@+id/txtListaDeCoisas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lista de coisas" />
 
-        <ListView
+        <TextView
+            android:id="@+id/txtLblStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+        	android:layout_marginLeft="230dp"
+            android:text="Status" />
+
+        </RelativeLayout>
+
+    <ListView
         android:id="@+id/listViewCoisas"
         android:layout_width="match_parent"
         android:layout_height="214dp"
-        android:layout_weight="0.87" >
+        android:layout_weight="0.34" >
     </ListView>
     
         <RelativeLayout
@@ -27,17 +44,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:onClick="adicionarCoisa"
             android:src="@drawable/ic_add" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/txtCoisaNomeAdicionar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_centerVertical="true"            
             android:layout_toLeftOf="@+id/btnAdicionarCoisa"
             android:ems="10" />
 
     </RelativeLayout>
+
+        
 
 </LinearLayout>

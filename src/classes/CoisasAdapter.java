@@ -35,7 +35,7 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			
 			//Seta as propriedades da view
 			vrTextViewNome.setText(vrCoisa.getNome());
-			if (vrCoisa.isEmprestada()) {
+			if (vrCoisa.isEmprestada()==1) {
 				vrTextViewEmprestada.setText("Emprestada");
 				vrTextViewEmprestada.setTextColor(Color.RED);
 			}else

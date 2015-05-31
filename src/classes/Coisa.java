@@ -4,23 +4,29 @@ import java.util.Calendar;
 
 public class Coisa {
 	
+	private long idCoisa;
 	private String nome;
-	private String amigoEmprestado;
-	private boolean emprestada;	
+	private int emprestada;
+	private Amigo amigoEmprestado;
+	private String date;
 	
 	
 	public Coisa() {
+		this.idCoisa = 0;
 		this.nome = "";		
-		this.amigoEmprestado = "";
-		this.emprestada = false;
+		this.amigoEmprestado = new Amigo();
+		this.emprestada = 0;
+		this.date = "";
 	
 	}
 
-	public Coisa(String nome, String amigoEmprestado, boolean emprestada) {
+	public Coisa(String nome, Amigo amigoEmprestado , String date) {
 		
+		this.idCoisa = 0;
 		this.nome = nome;
 		this.amigoEmprestado = amigoEmprestado;
-		this.emprestada = emprestada;
+		this.emprestada = 0;
+		this.date = date;
 	}
 
 	public String getNome() {
@@ -31,24 +37,39 @@ public class Coisa {
 		this.nome = nome;
 	}
 
-	public String getAmigoEmprestado() {
+	public Amigo getAmigoEmprestado() {
 		return amigoEmprestado;
 	}
 
-	public void setAmigoEmprestado(String amigoEmprestado) {
+	public void setAmigoEmprestado(Amigo amigoEmprestado) {
 		this.amigoEmprestado = amigoEmprestado;
 	}
 
-	public boolean isEmprestada() {
+	public int isEmprestada() {
 		return emprestada;
 	}
 
-	public void setEmprestada(boolean emprestada) {
+	public void setEmprestada(int emprestada) {
 		this.emprestada = emprestada;
 	}
-	
-	
-	
 
+	public long getIdCoisa() {
+		return idCoisa;
+	}
 
+	public void setIdCoisa(long idCoisa) {
+		this.idCoisa = idCoisa;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	
+	
+	
 }

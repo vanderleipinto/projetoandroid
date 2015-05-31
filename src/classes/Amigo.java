@@ -1,16 +1,26 @@
 package classes;
 
-public class Amigo {
-	private String nome;
+import java.util.ArrayList;
 
-	public Amigo(String nome) {
-		super();
-		this.nome = nome;
-	}
+import android.R.color;
+
+public class Amigo {
+	private long idAmigo;
+	private String nome;
 	
+	
+	public Amigo(int idAmigo, String nome) {
+		super();
+		this.idAmigo = idAmigo;
+		this.nome = nome;
+		
+	}
+
 	public Amigo() {
 		super();
-		this.nome = " ";
+		this.idAmigo = 0;
+		this.nome = "";
+		
 	}
 
 	public String getNome() {
@@ -21,5 +31,15 @@ public class Amigo {
 		this.nome = nome;
 	}
 	
+
+	public long getIdAmigo() {
+		return idAmigo;
+	}
+
+	public void setIdAmigo(long idAmigo) {
+		this.idAmigo = idAmigo;
+	}
+		
+
 	
 }
