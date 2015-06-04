@@ -1,24 +1,23 @@
 package com.example.empresta_iii;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 import classes.*;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,7 +65,7 @@ public class MainActivity extends FragmentActivity {
 		arrayAmigos = dataBase.getAllAmigo();
 		arrayCoisas = dataBase.getAllCoisa();
 		
-		
+		Log.d("", "");
 		
 
 	}
@@ -217,7 +216,6 @@ public class MainActivity extends FragmentActivity {
 
 
 
-
 			ListView lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
 			AmigosAdapter amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
 			lvAmigos.setAdapter(amigosAdapter);	
@@ -238,6 +236,18 @@ public class MainActivity extends FragmentActivity {
 		public void onItemClick(AdapterView<?> arg0, View view, int position,
 				long arg3) {
 			//TODO mostrar coisas que o amigo possui com ele 
+			TextView vrTextViewNomeAmigo = (TextView)view.findViewById(R.id.txtNomeAmigo);
+			TextView vrTextViewIdAmigo = (TextView)view.findViewById(R.id.txtIdAmigo);
+			
+			
+			Bundle params = new Bundle();
+			params.putString("idAmigo", vrTextViewIdAmigo.getText().toString());
+			Log.d("mandando", vrTextViewIdAmigo.getText().toString());
+			
+			Intent intent = new Intent(getActivity(), ActivityAmigo.class);
+			intent.putExtras(params);
+			
+			startActivity(intent);
 
 
 		}
@@ -248,7 +258,8 @@ public class MainActivity extends FragmentActivity {
 			// TODO Gerar uma Dialog com alteração de nome do amigo.
 
 			TextView vrTextViewNomeAmigo = (TextView)view.findViewById(R.id.txtNomeAmigo);
-			Toast.makeText(this.rootView.getContext(), vrTextViewNomeAmigo.getText()+" "+ String.valueOf(position), Toast.LENGTH_SHORT).show();
+			TextView vrTextViewIdAmigo = (TextView)view.findViewById(R.id.txtIdAmigo);
+			Toast.makeText(this.rootView.getContext(), vrTextViewNomeAmigo.getText()+" id=  "+ vrTextViewIdAmigo.getText(), Toast.LENGTH_SHORT).show();
 
 			return false;
 		}
@@ -263,7 +274,7 @@ public class MainActivity extends FragmentActivity {
 			return;
 		}
 		
-		Amigo amigo = new Amigo(1, txtAmigoNomeAdicionar.getText().toString());
+		Amigo amigo = new Amigo(txtAmigoNomeAdicionar.getText().toString());
 		arrayAmigos.add(amigo);
 		amigo.setIdAmigo(dataBase.addAmigo(amigo));
 		

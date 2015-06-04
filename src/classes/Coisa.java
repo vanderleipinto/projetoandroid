@@ -6,7 +6,7 @@ public class Coisa {
 	
 	private long idCoisa;
 	private String nome;
-	private int emprestada;
+	private int emprestada; // 1 para "emprestada" 0 para "de posse"
 	private Amigo amigoEmprestado;
 	private String date;
 	
@@ -68,6 +68,14 @@ public class Coisa {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getNome();
+		
+	}
+	
 
 	
 	

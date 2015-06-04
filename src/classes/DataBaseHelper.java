@@ -99,6 +99,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Amigo getOneAmigo(int id){
     	SQLiteDatabase db = this.getReadableDatabase();
     	 
+    	if (id==0)
+    	{
+    		return new Amigo();
+    	}
         String selectQuery = "SELECT  * FROM " + TABLE_AMIGO + " WHERE " + KEY_ID_AMIGO + " = " + id;
      
         Log.e(LOG, selectQuery);
@@ -143,7 +147,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // insert row
         long idCoisa = db.insert(TABLE_COISA, null, values);
         
-        Log.d("inseriu amigo na posição", String.valueOf(idCoisa));
+        Log.d("inseriu coisa na posição", String.valueOf(idCoisa));
      
         return idCoisa;
     }

@@ -9,15 +9,13 @@ public class Amigo {
 	private String nome;
 	
 	
-	public Amigo(int idAmigo, String nome) {
-		super();
-		this.idAmigo = idAmigo;
-		this.nome = nome;
-		
+	public Amigo(String nome) {
+		this.idAmigo = 0;
+		this.nome = nome;		
 	}
 
 	public Amigo() {
-		super();
+		
 		this.idAmigo = 0;
 		this.nome = "";
 		
