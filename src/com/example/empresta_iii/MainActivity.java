@@ -185,15 +185,14 @@ public class MainActivity extends FragmentActivity {
 			return rootView;
 		}
 
-		public void adicionarCoisa(View vrView)
-		{
-			Toast.makeText(this.rootView.getContext(), "adiciona coisa", Toast.LENGTH_SHORT).show();
-		}
+		
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			// TODO Auto-generated method stub
+			// TODO enviar para Coisa activity que visualisa os amigos que ela está emprestada
+			
+			
 			Toast.makeText(this.rootView.getContext(), "adiciona coisa", Toast.LENGTH_SHORT).show();
 
 		}

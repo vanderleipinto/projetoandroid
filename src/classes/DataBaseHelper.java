@@ -83,7 +83,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_AMIGO, KEY_ID_AMIGO + " = ?", new String[] { String.valueOf(id) });
         
-        // delObjetivoSemana(id); verificar se o amigo tem coisas com ele
+        Log.d("delAmigo ok ", "Deletou o amigo" + String.valueOf(id));
+        
+        // TODO delObjetivoSemana(id); verificar se o amigo tem coisas com ele
     }
     
     private Amigo CreateAmigo(Cursor c){
@@ -93,6 +95,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         
         return amigo;
     }
+    
+
     
    
     
@@ -110,10 +114,36 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, null);
      
         if (c != null && c.moveToFirst())
+        {
+        	Log.d("getOneAmigo ok ", "Buscou o amigo" + String.valueOf(id));
         	return CreateAmigo(c);
-        
+        }
+        	
+        Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
         return null;
     }
+    
+    public Coisa getOneCoisa(long id){
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	 
+    	if (id==0)
+    	{
+    		return new Coisa();
+    	}
+        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_ID_COISA + " = " + id;
+     
+        Cursor c = db.rawQuery(selectQuery, null);
+     
+        if (c != null && c.moveToFirst())
+        {
+        	Log.d("getOneCoisa ok ", "Buscou o coisa" + String.valueOf(id));
+        	return CreateCoisa(c);
+        }
+        	
+        Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
+        return null;
+    }
+    
     
     public ArrayList<Amigo> getAllAmigo(){
     	ArrayList<Amigo> listAmigos = new ArrayList<Amigo>();  //TODO Emiliano Porque List<Amigo> instead of ArrayList<Amigo>????
@@ -152,10 +182,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return idCoisa;
     }
     
-    
-    public void delCoisa(long id_objetivo) {
+    public long updateCoisa(Coisa coisa) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_COISA, KEY_ID_COISA + " = ?", new String[] { String.valueOf(id_objetivo) });
+     
+        ContentValues values = new ContentValues(); 
+        
+        values.put(KEY_NOME_COISA, coisa.getNome());
+        values.put(KEY_COISA_IDAMIGO, coisa.getAmigoEmprestado().getIdAmigo());
+        values.put(KEY_EMPRESTADA, coisa.isEmprestada());        
+        values.put(KEY_DATE, coisa.getDate());
+        
+        
+        long idCoisa = db.update(TABLE_COISA, values, "_id = ?", new String[]{""+String.valueOf(coisa.getIdCoisa())});
+        
+        Coisa teste = getOneCoisa(coisa.getIdCoisa());
+        
+        Log.d("deve alterar ", String.valueOf(coisa.getIdCoisa()));
+        Log.d("alterou coisa ", String.valueOf(idCoisa));
+     
+        return idCoisa;
+    }
+    
+    
+    public void delCoisa(long id_coisa) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COISA, KEY_ID_COISA + " = ?", new String[] { String.valueOf(id_coisa) });
+        
+        Log.d("Deletou Coisa", String.valueOf(id_coisa));
+        
     }
     
     private Coisa CreateCoisa(Cursor c){

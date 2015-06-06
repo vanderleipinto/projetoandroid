@@ -19,105 +19,72 @@ import android.widget.TextView;
 
 
 public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
-		Amigo amigo = new Amigo();
+	Amigo amigo = new Amigo();
+	DataBaseHelper dataBase = null;
 	//Construtor da classe
-		public SpinnerCoisasAdapter(Context vrContexto, ArrayList<Coisa> vrListaCoisa, Amigo vrAmigo){
-			super(vrContexto, 0, vrListaCoisa);
-			this.amigo = vrAmigo;
+	public SpinnerCoisasAdapter(Context vrContexto, ArrayList<Coisa> vrListaCoisa, Amigo vrAmigo){
+		super(vrContexto, 0, vrListaCoisa);
+		this.amigo = vrAmigo;
+		dataBase = new DataBaseHelper(vrContexto);
+	}
+
+	//Metodo utilizado para o preenchimento das celulas
+	public View getView(int indice, View viewReciclada, ViewGroup viewPai){
+		final Coisa vrCoisa = this.getItem(indice);
+
+		//Verifica se e necessario validar a celula
+		if (viewReciclada == null){
+			viewReciclada = LayoutInflater.from(getContext()).inflate(R.layout.spinner_coisa , viewPai, false);
 		}
-		
-		//Metodo utilizado para o preenchimento das celulas
-		public View getView(int indice, View viewReciclada, ViewGroup viewPai){
-			Coisa vrCoisa = this.getItem(indice);
-			
-			//Verifica se e necessario validar a celula
-			if (viewReciclada == null){
-				viewReciclada = LayoutInflater.from(getContext()).inflate(R.layout.spinner_coisa , viewPai, false);
-			}
-			
-			//Obtem a referencia para os componentes da view
-			TextView vrTextViewNome = (TextView)viewReciclada.findViewById(R.id.txtSpinnerCoisa);
-			TextView vrTextViewEmprestada = (TextView)viewReciclada.findViewById(R.id.tglbtnStatusCoisa);
-			
-			//Seta as propriedades da view
-			vrTextViewNome.setText(vrCoisa.getNome());
-			Switch vrSwitchEmprestada = (Switch)viewReciclada.findViewById(R.id.tglbtnStatusCoisa);
-			
-			if (vrCoisa.getIdCoisa()==3) {///teste
-				vrCoisa.setEmprestada(1);
-				Amigo teste = new Amigo();
-				teste.setIdAmigo((long)17);
-				vrCoisa.setAmigoEmprestado(teste);
-			}
-			
-			if (vrCoisa.getIdCoisa()==5) {///teste
-				vrCoisa.setEmprestada(1);
-				vrCoisa.setAmigoEmprestado(amigo);
-			}
-			
-			
-			
-//			Seta as propriedades da view
-			vrTextViewNome.setText(vrCoisa.getNome());
-			if(vrCoisa.isEmprestada()==1) // está emprestada
+
+		//Obtem a referencia para os componentes da view
+		TextView vrTextViewNome = (TextView)viewReciclada.findViewById(R.id.txtSpinnerCoisa);		
+
+		//Seta as propriedades da view
+		vrTextViewNome.setText(vrCoisa.getNome());
+		Switch vrSwitchEmprestada = (Switch)viewReciclada.findViewById(R.id.tglbtnStatusCoisa);
+
+		if(vrCoisa.isEmprestada()==1) // está emprestada
+		{
+			vrSwitchEmprestada.setChecked(true); /// marca como emprestada
+			if(vrCoisa.getAmigoEmprestado().getIdAmigo() != amigo.getIdAmigo()) /// está emprestada para outro amigo 
+				vrSwitchEmprestada.setEnabled(false); /// não tem como mexer aqui dentro desta view
+				vrSwitchEmprestada.setTextOn(vrCoisa.getAmigoEmprestado().getNome());
+		}
+
+
+		vrSwitchEmprestada.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(isChecked)
 				{
-					vrSwitchEmprestada.setChecked(true); /// marca como emprestada
-					if(vrCoisa.getAmigoEmprestado().getIdAmigo() != amigo.getIdAmigo()) /// está emprestada para outro amigo 
-						vrSwitchEmprestada.setEnabled(false); /// não tem como mexer aqui dentro desta view
+					vrCoisa.setEmprestada(1);
+					vrCoisa.setAmigoEmprestado(amigo);
+					dataBase.updateCoisa(vrCoisa);
+
+
+					Toast.makeText(getContext(), "checked" + vrCoisa.getIdCoisa(), Toast.LENGTH_SHORT).show();
 				}
-			
-			
-			vrSwitchEmprestada.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					// TODO Auto-generated method stub
-					if(isChecked)
-						{
-							
-							
-							Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-						}
-					if(!isChecked) 
-						{
-							Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-						}
+				if(!isChecked) 
+				{
 					
+					vrCoisa.setEmprestada(0);
+					vrCoisa.setAmigoEmprestado(amigo);
+					dataBase.updateCoisa(vrCoisa);
+					Toast.makeText(getContext(), "unchecked", Toast.LENGTH_SHORT).show();
 				}
-			});
-				
-			
-			
-			if (vrCoisa.getIdCoisa()==3) {///teste
-				vrCoisa.setEmprestada(1);
-				Amigo teste = new Amigo();
-				teste.setIdAmigo(17);
-				vrCoisa.setAmigoEmprestado(teste);
+
 			}
-			
-			if (vrCoisa.getIdCoisa()==5) {///teste
-				vrCoisa.setEmprestada(1);
-				vrCoisa.setAmigoEmprestado(amigo);
-			}
-			
-			
-			
-			
-			
-			if(vrCoisa.isEmprestada()==1 && vrCoisa.getAmigoEmprestado()== amigo) // Se tiver comigo, pode editar
-			{
-				vrSwitchEmprestada.setEnabled(false);
-				vrSwitchEmprestada.setBackgroundColor(Color.LTGRAY);  
-			}
-			
-			
-			if (indice % 2 == 0)
-				viewReciclada.setBackgroundColor(Color.LTGRAY);
-			else
-				viewReciclada.setBackgroundColor(Color.WHITE);
-			
-			
-			
-			return viewReciclada;
-		}
+		});
+		if (indice % 2 == 0)
+			viewReciclada.setBackgroundColor(Color.LTGRAY);
+		else
+			viewReciclada.setBackgroundColor(Color.WHITE);
+
+
+
+		return viewReciclada;
+	}
 }

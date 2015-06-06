@@ -22,6 +22,7 @@
         android:background="@android:color/holo_orange_light"
         android:checked="false"
         android:textOff="Comigo"
-        android:textOn="Emprestado" />
+        android:textOn="Emprestado"
+        android:enabled="true" />
 
 </RelativeLayout>
