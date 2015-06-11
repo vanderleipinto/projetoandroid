@@ -28,30 +28,34 @@ public final class R {
     public static final class id {
         public static final int RelativeLayout1=0x7f080004;
         public static final int Space1=0x7f080007;
-        public static final int action_settings=0x7f08001a;
-        public static final int btnAdicionarAmigo=0x7f080012;
-        public static final int btnAdicionarCoisa=0x7f080016;
-        public static final int btnCancelaSalvarAmigo=0x7f08000c;
-        public static final int btnSalvarAmigo=0x7f08000d;
-        public static final int listViewAmigos=0x7f080010;
-        public static final int listViewCoisas=0x7f080015;
+        public static final int action_settings=0x7f08001e;
+        public static final int btnAdicionarAmigo=0x7f080016;
+        public static final int btnAdicionarCoisa=0x7f08001a;
+        public static final int btnCancelaSalvarAmigo=0x7f08000d;
+        public static final int btnDialFragCoisaNao=0x7f080011;
+        public static final int btnDialFragCoisaSim=0x7f080010;
+        public static final int btnSalvarAmigo=0x7f08000e;
+        public static final int listViewAmigos=0x7f080014;
+        public static final int listViewCoisas=0x7f080019;
         public static final int lvActivityAmigoListaCoisas=0x7f080001;
         public static final int pager=0x7f080002;
         public static final int pager_title_strip=0x7f080003;
-        public static final int section_label=0x7f08000e;
-        public static final int tglbtnStatusCoisa=0x7f080019;
+        public static final int section_label=0x7f080012;
+        public static final int textView1=0x7f08000f;
+        public static final int tglbtnStatusCoisa=0x7f08001d;
         public static final int txtActvityAmigoNomeAmigo=0x7f080000;
-        public static final int txtAdiconarAmigo=0x7f08000b;
-        public static final int txtAmigoNomeAdicionar=0x7f080011;
+        public static final int txtAdiconarAmigo=0x7f08000c;
+        public static final int txtAmigoNomeAdicionar=0x7f080015;
         public static final int txtCoisa=0x7f080009;
-        public static final int txtCoisaNomeAdicionar=0x7f080017;
+        public static final int txtCoisaNomeAdicionar=0x7f08001b;
         public static final int txtIdAmigo=0x7f080005;
-        public static final int txtLblListaDeAmigos=0x7f08000f;
-        public static final int txtLblStatus=0x7f080014;
-        public static final int txtListaDeCoisas=0x7f080013;
+        public static final int txtIdCoisa=0x7f08000b;
+        public static final int txtLblListaDeAmigos=0x7f080013;
+        public static final int txtLblStatus=0x7f080018;
+        public static final int txtListaDeCoisas=0x7f080017;
         public static final int txtNomeAmigo=0x7f080006;
         public static final int txtNumeroCoisas=0x7f080008;
-        public static final int txtSpinnerCoisa=0x7f080018;
+        public static final int txtSpinnerCoisa=0x7f08001c;
         public static final int txtStatusCoisa=0x7f08000a;
     }
     public static final class layout {
@@ -60,10 +64,11 @@ public final class R {
         public static final int amigo_lv=0x7f030002;
         public static final int coisa_lv=0x7f030003;
         public static final int dialog_fragment_layout_amigo=0x7f030004;
-        public static final int fragment_main_dummy=0x7f030005;
-        public static final int layout_fragment_amigo=0x7f030006;
-        public static final int layout_fragment_coisa=0x7f030007;
-        public static final int spinner_coisa=0x7f030008;
+        public static final int dialog_fragment_layout_coisa=0x7f030005;
+        public static final int fragment_main_dummy=0x7f030006;
+        public static final int layout_fragment_amigo=0x7f030007;
+        public static final int layout_fragment_coisa=0x7f030008;
+        public static final int spinner_coisa=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f070000;

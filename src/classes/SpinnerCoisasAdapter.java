@@ -57,7 +57,7 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				// TODO Auto-generated method stub
+				
 				if(isChecked)
 				{
 					vrCoisa.setEmprestada(1);
@@ -71,9 +71,9 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 				{
 					
 					vrCoisa.setEmprestada(0);
-					vrCoisa.setAmigoEmprestado(amigo);
+					vrCoisa.setAmigoEmprestado(new Amigo());
 					dataBase.updateCoisa(vrCoisa);
-					Toast.makeText(getContext(), "unchecked", Toast.LENGTH_SHORT).show();
+					
 				}
 
 			}

@@ -34,17 +34,6 @@ public class AmigosAdapter extends ArrayAdapter<Amigo> {
 			if (viewReciclada == null){
 				viewReciclada = LayoutInflater.from(getContext()).inflate(R.layout.amigo_lv , viewPai, false);
 			}
-			
-//			
-			
-				
-//			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item);
-//			CoisasAdapter coisasAdapter= new CoisasAdapter(getContext(), dataBase.getAllCoisa());			
-//			coisasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//			sp.setAdapter(coisasAdapter);
-//			SpinnerCoisasAdapter coisasAdapter= new SpinnerCoisasAdapter(viewReciclada.getContext(), dataBase.getAllCoisa());
-//			Spinner sp = (Spinner)viewReciclada.findViewById(R.id.SpinnerCoisasEmprestadas);//			
-//			sp.setAdapter(coisasAdapter);
 
 			//Obtem a referencia para os componentes da view
 			TextView vrTextViewNomeAmigo = (TextView)viewReciclada.findViewById(R.id.txtNomeAmigo);
@@ -53,6 +42,7 @@ public class AmigosAdapter extends ArrayAdapter<Amigo> {
 			
 			
 			vrTextViewIdAmigo.setText(String.valueOf(vrAmigo.getIdAmigo()));
+			vrTextViewNumeroCoisas.setText(String.valueOf(dataBase.getNumCoisasEmprestadasAmigo(vrAmigo))); 
 			
 			//Seta as propriedades da view
 			vrTextViewNomeAmigo.setText(vrAmigo.getNome());

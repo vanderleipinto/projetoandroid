@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -88,7 +89,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // TODO delObjetivoSemana(id); verificar se o amigo tem coisas com ele
     }
     
-    private Amigo CreateAmigo(Cursor c){
+    public Amigo getOneAmigo(long id){
+		SQLiteDatabase db = this.getReadableDatabase();
+		 
+		if (id==0)
+		{
+			return new Amigo();
+		}
+	    String selectQuery = "SELECT  * FROM " + TABLE_AMIGO + " WHERE " + KEY_ID_AMIGO + " = " + id;
+	
+	    Log.e(LOG, selectQuery);
+	
+	    Cursor c = db.rawQuery(selectQuery, null);
+	
+	    if (c != null && c.moveToFirst())
+	    {
+	    	Log.d("getOneAmigo ok ", "Buscou o amigo" + String.valueOf(id));
+	    	return CreateAmigo(c);
+	    }
+	    	
+	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
+	    return null;
+	}
+
+	public ArrayList<Amigo> getAllAmigo(){
+		ArrayList<Amigo> listAmigos = new ArrayList<Amigo>();  //TODO Emiliano Porque List<Amigo> instead of ArrayList<Amigo>????
+	    String selectQuery = "SELECT  * FROM " + TABLE_AMIGO;
+	
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    Cursor c = db.rawQuery(selectQuery, null);
+	
+	    if (c.moveToFirst()) {
+	       do {
+	    	   listAmigos.add(CreateAmigo(c));
+	       } while (c.moveToNext());
+	    }
+	
+	    return listAmigos;
+	}
+
+	private Amigo CreateAmigo(Cursor c){
     	Amigo amigo = new Amigo();
         amigo.setIdAmigo(c.getInt(c.getColumnIndex(KEY_ID_AMIGO)));        
         amigo.setNome(c.getString(c.getColumnIndex(KEY_NOME_AMIGO)));
@@ -100,89 +140,73 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     
    
     
-    public Amigo getOneAmigo(int id){
-    	SQLiteDatabase db = this.getReadableDatabase();
-    	 
-    	if (id==0)
-    	{
-    		return new Amigo();
-    	}
-        String selectQuery = "SELECT  * FROM " + TABLE_AMIGO + " WHERE " + KEY_ID_AMIGO + " = " + id;
-     
-        Log.e(LOG, selectQuery);
-     
-        Cursor c = db.rawQuery(selectQuery, null);
-     
-        if (c != null && c.moveToFirst())
-        {
-        	Log.d("getOneAmigo ok ", "Buscou o amigo" + String.valueOf(id));
-        	return CreateAmigo(c);
-        }
-        	
-        Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
-        return null;
-    }
-    
-    public Coisa getOneCoisa(long id){
-    	SQLiteDatabase db = this.getReadableDatabase();
-    	 
-    	if (id==0)
-    	{
-    		return new Coisa();
-    	}
-        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_ID_COISA + " = " + id;
-     
-        Cursor c = db.rawQuery(selectQuery, null);
-     
-        if (c != null && c.moveToFirst())
-        {
-        	Log.d("getOneCoisa ok ", "Buscou o coisa" + String.valueOf(id));
-        	return CreateCoisa(c);
-        }
-        	
-        Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
-        return null;
-    }
-    
-    
-    public ArrayList<Amigo> getAllAmigo(){
-    	ArrayList<Amigo> listAmigos = new ArrayList<Amigo>();  //TODO Emiliano Porque List<Amigo> instead of ArrayList<Amigo>????
-        String selectQuery = "SELECT  * FROM " + TABLE_AMIGO;
-     
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
-     
-        if (c.moveToFirst()) {
-           do {
-        	   listAmigos.add(CreateAmigo(c));
-           } while (c.moveToNext());
-        }
-
-        return listAmigos;
-    }
-    
-    
-    
     public long addCoisa(Coisa coisa) {
-        SQLiteDatabase db = this.getWritableDatabase();
-     
-        ContentValues values = new ContentValues();
-        
-        values.put(KEY_NOME_COISA, coisa.getNome());
-        values.put(KEY_COISA_IDAMIGO, coisa.getAmigoEmprestado().getIdAmigo());
-        values.put(KEY_EMPRESTADA, coisa.isEmprestada());        
-        values.put(KEY_DATE, coisa.getDate());
-        
-     
-        // insert row
-        long idCoisa = db.insert(TABLE_COISA, null, values);
-        
-        Log.d("inseriu coisa na posição", String.valueOf(idCoisa));
-     
-        return idCoisa;
-    }
-    
-    public long updateCoisa(Coisa coisa) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	
+	    ContentValues values = new ContentValues();
+	    
+	    values.put(KEY_NOME_COISA, coisa.getNome());
+	    values.put(KEY_COISA_IDAMIGO, coisa.getAmigoEmprestado().getIdAmigo());
+	    values.put(KEY_EMPRESTADA, coisa.isEmprestada());        
+	    values.put(KEY_DATE, coisa.getDate());
+	    
+	
+	    // insert row
+	    long idCoisa = db.insert(TABLE_COISA, null, values);
+	    
+	    Log.d("inseriu coisa na posição", String.valueOf(idCoisa));
+	
+	    return idCoisa;
+	}
+
+	public void delCoisa(long id_coisa) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    db.delete(TABLE_COISA, KEY_ID_COISA + " = ?", new String[] { String.valueOf(id_coisa) });
+	    
+	    Log.d("Deletou Coisa", String.valueOf(id_coisa));
+	    
+	}
+
+	public Coisa getOneCoisa(long id){
+		SQLiteDatabase db = this.getReadableDatabase();
+		 
+		if (id==0)
+		{
+			return new Coisa();
+		}
+	    String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_ID_COISA + " = " + id;
+	
+	    Cursor c = db.rawQuery(selectQuery, null);
+	
+	    if (c != null && c.moveToFirst())
+	    {
+	    	Log.d("getOneCoisa ok ", "Buscou o coisa" + String.valueOf(id));
+	    	return CreateCoisa(c);
+	    }
+	    	
+	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
+	    return null;
+	}
+
+	public ArrayList<Coisa> getAllCoisa(){
+		ArrayList<Coisa> objs = new ArrayList<Coisa>();
+	    String selectQuery = "SELECT  * FROM " + TABLE_COISA + " ORDER BY " + KEY_NOME_COISA;
+	
+	    Log.e(LOG, selectQuery);
+	
+	    SQLiteDatabase db = this.getReadableDatabase();
+	    Cursor c = db.rawQuery(selectQuery, null);
+	
+	    if (c.moveToFirst()) {
+	       do {
+	           objs.add(CreateCoisa(c));
+	       } while (c.moveToNext());
+	    }
+	
+	    return objs;
+	}
+
+	public long updateCoisa(Coisa coisa) {
         SQLiteDatabase db = this.getWritableDatabase();
      
         ContentValues values = new ContentValues(); 
@@ -203,14 +227,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return idCoisa;
     }
     
-    
-    public void delCoisa(long id_coisa) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_COISA, KEY_ID_COISA + " = ?", new String[] { String.valueOf(id_coisa) });
-        
-        Log.d("Deletou Coisa", String.valueOf(id_coisa));
-        
-    }
     
     private Coisa CreateCoisa(Cursor c){
     	Coisa coisa = new Coisa();
@@ -241,8 +257,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //    
    
     
-    public List<Coisa> getListCoisaAmigo(Amigo amigo){
-    	List<Coisa> objs = new ArrayList<Coisa>();
+    public ArrayList<Coisa> getListCoisaAmigo(Amigo amigo){
+    	ArrayList<Coisa> objs = new ArrayList<Coisa>();
         String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_COISA_IDAMIGO + " = " + amigo.getIdAmigo()+ " ORDER BY " + KEY_NOME_COISA ;
      
         Log.e(LOG, selectQuery);
@@ -295,25 +311,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return objs;
     }
     
-    public ArrayList<Coisa> getAllCoisa(){
-    	ArrayList<Coisa> objs = new ArrayList<Coisa>();
-        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " ORDER BY " + KEY_NOME_COISA;
-     
-        Log.e(LOG, selectQuery);
-     
+    public int getNumCoisasEmprestadasAmigo(Amigo amigo){
+    	
+        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_EMPRESTADA + " = 0" + " ORDER BY " + KEY_NOME_COISA ;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+        int numRows = (int) DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_COISA +" WHERE "+KEY_COISA_IDAMIGO+" = "+amigo.getIdAmigo(), null);
+        
      
-        if (c.moveToFirst()) {
-           do {
-               objs.add(CreateCoisa(c));
-           } while (c.moveToNext());
-        }
-
-        return objs;
+        
+        return numRows;
     }
     
-//
+    
+    
+//int numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM table_name", null);
 //    
 //    
 //    public int getCountVencimento(int idObjetivo, String date){

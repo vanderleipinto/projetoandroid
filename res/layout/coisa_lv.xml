@@ -22,4 +22,15 @@
         android:layout_marginLeft="230dp"
         android:text="Emprestado" />
 
+    <TextView
+        android:id="@+id/txtIdCoisa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/txtStatusCoisa"
+        android:layout_marginRight="84dp"
+        android:text="id"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="visible" />
+
 </RelativeLayout>

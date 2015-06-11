@@ -32,15 +32,17 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			//Obtem a referencia para os componentes da view
 			TextView vrTextViewNome = (TextView)viewReciclada.findViewById(R.id.txtCoisa);
 			TextView vrTextViewEmprestada = (TextView)viewReciclada.findViewById(R.id.txtStatusCoisa);
+			TextView vrTextIdCoisa = (TextView) viewReciclada.findViewById(R.id.txtIdCoisa);
 			
 			//Seta as propriedades da view
 			vrTextViewNome.setText(vrCoisa.getNome());
+			vrTextIdCoisa.setText(String.valueOf(vrCoisa.getIdCoisa()));
 			if (vrCoisa.isEmprestada()==1) {
-				vrTextViewEmprestada.setText("Emprestada");
+				vrTextViewEmprestada.setText(vrCoisa.getAmigoEmprestado().getNome());
 				vrTextViewEmprestada.setTextColor(Color.RED);
 			}else
 			{
-				vrTextViewEmprestada.setText("De posse");
+				vrTextViewEmprestada.setText("Comigo");
 				vrTextViewEmprestada.setTextColor(Color.GREEN);
 			}
 			
