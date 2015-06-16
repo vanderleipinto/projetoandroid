@@ -39,11 +39,11 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			vrTextIdCoisa.setText(String.valueOf(vrCoisa.getIdCoisa()));
 			if (vrCoisa.isEmprestada()==1) {
 				vrTextViewEmprestada.setText(vrCoisa.getAmigoEmprestado().getNome());
-				vrTextViewEmprestada.setTextColor(Color.RED);
+				vrTextViewEmprestada.setTextColor(Color.rgb(168, 36, 0));
 			}else
 			{
 				vrTextViewEmprestada.setText("Comigo");
-				vrTextViewEmprestada.setTextColor(Color.GREEN);
+				vrTextViewEmprestada.setTextColor(Color.rgb(16, 123, 17));
 			}
 			
 			if (indice % 2 == 0)
@@ -56,3 +56,4 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			return viewReciclada;
 		}
 }
+

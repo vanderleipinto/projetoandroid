@@ -218,11 +218,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         
         
         long idCoisa = db.update(TABLE_COISA, values, "_id = ?", new String[]{""+String.valueOf(coisa.getIdCoisa())});
-        
-        Coisa teste = getOneCoisa(coisa.getIdCoisa());
-        
-        Log.d("deve alterar ", String.valueOf(coisa.getIdCoisa()));
-        Log.d("alterou coisa ", String.valueOf(idCoisa));
+     
      
         return idCoisa;
     }
@@ -311,9 +307,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return objs;
     }
     
-    public int getNumCoisasEmprestadasAmigo(Amigo amigo){
+ public int getNumCoisasEmprestadasAmigo(Amigo amigo){
     	
-        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_EMPRESTADA + " = 0" + " ORDER BY " + KEY_NOME_COISA ;
+        
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_COISA +" WHERE "+KEY_COISA_IDAMIGO+" = "+amigo.getIdAmigo(), null);
         
@@ -322,7 +318,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return numRows;
     }
     
-    
+ public int getNumCoisasEmprestadasTotal(){
+ 	
+     
+     SQLiteDatabase db = this.getReadableDatabase();
+     int numRows = (int) DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_COISA +" WHERE "+KEY_EMPRESTADA+" = 1", null);
+     
+     Log.i("numero de coisas emprestadas", "total emprestadas = " + numRows);
+  
+     
+     return numRows;
+ }
+ 
+ public int getListAmigosComCoisas(){
+ 	List<Coisa> objs = new ArrayList<Coisa>();
+     String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_EMPRESTADA + " = 1" + " ORDER BY " + KEY_NOME_COISA ;
+  
+     SQLiteDatabase db = this.getReadableDatabase();
+     Cursor c = db.rawQuery(selectQuery, null);
+  
+     if (c.moveToFirst()) {
+        do {
+            objs.add(CreateCoisa(c));
+        } while (c.moveToNext());
+     }
+   
+     ArrayList<Integer> list = new ArrayList<Integer>();
+      for (Coisa aux : objs) {
+		
+		if (!list.contains((int)aux.getAmigoEmprestado().getIdAmigo()))
+		{
+			list.add((int)aux.getAmigoEmprestado().getIdAmigo());
+		}
+	}
+     
+     return list.size();
+ }
+ 
+ 
     
 //int numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM table_name", null);
 //    

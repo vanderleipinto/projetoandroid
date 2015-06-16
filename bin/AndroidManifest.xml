@@ -26,6 +26,14 @@
             android:name="com.example.empresta_iii.ActivityAmigo"
             android:label="@string/app_name" >           
         </activity>
+        <activity
+            android:name="com.example.empresta_iii.ActivityCoisa"
+            android:label="@string/app_name" >           
+        </activity>
+        <activity
+            android:name="com.example.empresta_iii.ActivityAbout"
+            android:label="@string/app_name" >           
+        </activity>
         
     </application>
 

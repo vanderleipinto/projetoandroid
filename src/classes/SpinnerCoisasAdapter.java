@@ -52,7 +52,7 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 				vrSwitchEmprestada.setTextOn(vrCoisa.getAmigoEmprestado().getNome());
 		}
 
-
+	
 		vrSwitchEmprestada.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override

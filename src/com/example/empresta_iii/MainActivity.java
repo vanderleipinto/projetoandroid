@@ -14,11 +14,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -109,7 +112,14 @@ public class MainActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	
+	public boolean onMenuItemSelected(int menuId, MenuItem vrMenu)
+	    {
+		Intent intent = new Intent();
+	    	startActivity(intent.setClass(this, ActivityAbout.class));
+	    	return false;
+	    }
 
 
 
@@ -149,6 +159,15 @@ public class MainActivity extends FragmentActivity {
 			return null;
 
 		}
+		
+		@Override
+		public void notifyDataSetChanged() {
+			
+			Log.i(this.toString(), "notifyDataSetChanged() tutu");
+			
+			super.notifyDataSetChanged();
+		}
+		
 
 		@Override
 		public int getCount() {
@@ -169,6 +188,14 @@ public class MainActivity extends FragmentActivity {
 			}
 			return null;
 		}
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position,
+				Object object) {
+			// TODO Auto-generated method stub
+			super.setPrimaryItem(container, position, object);
+		}
+		
+		
 	}
 
 	/**
@@ -181,18 +208,45 @@ public class MainActivity extends FragmentActivity {
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
+		public View rootView;
+		public TextView numtotalamigos;
+		public TextView numtotalcoisas;
+		public TextView numcoisasemprestadas;
+		public TextView numamigoscomcoisas; 
+		
+		
 		public DummySectionFragment() {
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText("texto");
+			
+			rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+			dataBase = new DataBaseHelper(container.getContext());
+			numtotalamigos= (TextView) rootView.findViewById(R.id.numtotalamigos);
+			numtotalcoisas= (TextView) rootView.findViewById(R.id.numtotalcoisas);
+			numcoisasemprestadas= (TextView) rootView.findViewById(R.id.numcoisasemprestadas);
+			numamigoscomcoisas= (TextView) rootView.findViewById(R.id.numamigoscomcoisa);
+			
+			numtotalamigos.setText(String.valueOf(dataBase.getAllAmigo().size()));
+			numtotalcoisas.setText(String.valueOf(dataBase.getAllCoisa().size()));
+			numcoisasemprestadas.setText(String.valueOf(dataBase.getNumCoisasEmprestadasTotal()));
+			numamigoscomcoisas.setText(String.valueOf(dataBase.getListAmigosComCoisas()));
+			
 			return rootView;
 		}
+		
+		@Override
+		public void onResume() {
+			numtotalamigos.setText(String.valueOf(dataBase.getAllAmigo().size()));
+			numtotalcoisas.setText(String.valueOf(dataBase.getAllCoisa().size()));
+			numcoisasemprestadas.setText(String.valueOf(dataBase.getNumCoisasEmprestadasTotal()));
+			numamigoscomcoisas.setText(String.valueOf(dataBase.getListAmigosComCoisas()));
+			
+			super.onResume();
+		}
+		
 	}
 
 	public static class CoisaFragment extends Fragment implements OnItemClickListener,OnItemLongClickListener {
@@ -200,27 +254,61 @@ public class MainActivity extends FragmentActivity {
 
 		View rootView = null;
 		private boolean longclick = false;
-		//		public static FragmentTransaction ft;
+		ListView lvCoisas;
+		CoisasAdapter coisasAdapter;
 
 		public  CoisaFragment() {
+		}
+		
+		
+		
+		//____________________________________________________________________________________
+		
+		@Override
+		public void onPause() {
+			Log.d(this.toString(), "onPause");    
+			super.onPause();
 		}
 		
 		@Override
 		public void onDetach()
 		{
-			super.onDetach();
+			
 			Log.d(this.toString(), "OnDetach");
+			super.onDetach();
+		
 			
 		}
+		
+		@Override
+		public boolean onContextItemSelected(MenuItem item) {
+			Log.d(this.toString(), "OnContextItemSelected");
+			return super.onContextItemSelected(item);
+		}
+		
+		@Override
+		public void onHiddenChanged(boolean hidden) {
+			Log.d(this.toString(), "onHiddenChanged");
+			super.onHiddenChanged(hidden);
+		}
+		
+		@Override
+		public void onViewStateRestored(Bundle savedInstanceState) {
+			Log.d(this.toString(), "onViewStateRestored");
+			super.onViewStateRestored(savedInstanceState);
+			}
+		
+		//____________________________________________________________________________________		
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			rootView = inflater.inflate(R.layout.layout_fragment_coisa, container, false);
 
-			ListView lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
-			CoisasAdapter coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
-			lvCoisas.setAdapter(coisasAdapter);    
+			lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
+			coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
+			lvCoisas.setAdapter(coisasAdapter);   
+			coisasAdapter.notifyDataSetChanged();
 
 			lvCoisas.setOnItemLongClickListener(this);
 			lvCoisas.setOnItemClickListener(this);
@@ -235,24 +323,71 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View view, int arg2,
 				long arg3) {
-			// TODO enviar para Coisa activity que visualisa os amigos que ela está emprestada
+			// TODO se tiver emprestada, perguntar se devolve. se estiver comigo, abre tela para quem emprestar
 			if (longclick)
 			{
 				longclick  = false;
 				return;
 			}
 			TextView vrTextViewIdCoisa = (TextView)view.findViewById(R.id.txtIdCoisa);
+			final Coisa coisa = dataBase.getOneCoisa(Long.parseLong(vrTextViewIdCoisa.getText().toString()));
+			
+			if (coisa.isEmprestada()==1)
+			{
+				new AlertDialog.Builder(view.getContext())
+				.setTitle("Coisa devolvida?")
+				.setMessage("O "+ coisa.getAmigoEmprestado().getNome()+" devolveu?")
+				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) { 
 
-			Log.d(this.toString(), "id coisa é "+vrTextViewIdCoisa.getText());
-			Toast.makeText(this.rootView.getContext(),"id coisa é "+vrTextViewIdCoisa.getText(), Toast.LENGTH_SHORT).show();
-			Bundle params = new Bundle();
-			params.putString("idAmigo", vrTextViewIdCoisa.getText().toString());
-			Log.d("mandando coisa", vrTextViewIdCoisa.getText().toString());			
-			Intent intent = new Intent(getActivity(), ActivityAmigo.class);
-			intent.putExtras(params);			
-			startActivity(intent);
+						coisa.setEmprestada(0);
+						coisa.setAmigoEmprestado(new Amigo());
+						dataBase.updateCoisa(coisa);
+						arrayCoisas.clear();
+						arrayCoisas = dataBase.getAllCoisa();
+						lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
+						coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
+						lvCoisas.setAdapter(coisasAdapter);   
+						coisasAdapter.notifyDataSetChanged();		
+
+					}
+				})
+				.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) { 
+						// do nothing 
+					}
+				})
+				.setIcon(android.R.drawable.ic_dialog_info)
+				.show();
+				
+				
+			}else
+			{
+				Bundle params = new Bundle();
+				params.putString("idCoisa", vrTextViewIdCoisa.getText().toString());
+				Log.d("mandando coisa", vrTextViewIdCoisa.getText().toString());			
+				Intent intent = new Intent(getActivity(), ActivityCoisa.class);
+				intent.putExtras(params);			
+				startActivity(intent);
+				
+			}
+			
+			
 
 
+		}
+		
+		@Override
+		public void onResume() {
+			
+			arrayCoisas.clear();
+			arrayCoisas = dataBase.getAllCoisa();
+			lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
+			coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
+			lvCoisas.setAdapter(coisasAdapter);   
+			coisasAdapter.notifyDataSetChanged();			
+			
+			super.onResume();
 		}
 
 		@Override
@@ -273,7 +408,13 @@ public class MainActivity extends FragmentActivity {
 					public void onClick(DialogInterface dialog, int which) { 
 
 
-						dataBase.delCoisa(coisa.getIdCoisa());		        		
+						dataBase.delCoisa(coisa.getIdCoisa());
+						arrayCoisas.clear();
+						arrayCoisas = dataBase.getAllCoisa();
+						lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
+						coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
+						lvCoisas.setAdapter(coisasAdapter);   
+						coisasAdapter.notifyDataSetChanged();		
 
 					}
 				})
@@ -292,11 +433,17 @@ public class MainActivity extends FragmentActivity {
 
 				new AlertDialog.Builder(view.getContext())
 				.setTitle("Apagar Coisa?")
-				.setMessage("Are you sure you want to delete this entry?")
+				.setMessage("Tem certeza que deseja apagar?")
 				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) { 
 
-						dataBase.delCoisa(coisa.getIdCoisa());		        		
+						dataBase.delCoisa(coisa.getIdCoisa());	
+						arrayCoisas.clear();
+						arrayCoisas = dataBase.getAllCoisa();
+						lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
+						coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
+						lvCoisas.setAdapter(coisasAdapter);   
+						coisasAdapter.notifyDataSetChanged();		
 
 					}
 				})
@@ -312,11 +459,18 @@ public class MainActivity extends FragmentActivity {
 			
 			return false;
 		}
+		
+		
+		
+		
 	}
+	
+	
 	public static class AmigoFragment extends Fragment implements OnItemLongClickListener, OnItemClickListener {
-
-
+		ListView lvAmigos;
+		AmigosAdapter amigosAdapter;
 		public AmigoFragment() {
+			
 		}
 
 		View rootView = null;
@@ -329,8 +483,8 @@ public class MainActivity extends FragmentActivity {
 
 
 
-			ListView lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
-			AmigosAdapter amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
+			lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
+			amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
 			lvAmigos.setAdapter(amigosAdapter);	
 			lvAmigos.setOnItemLongClickListener(this);
 
@@ -342,6 +496,21 @@ public class MainActivity extends FragmentActivity {
 
 
 			return rootView;
+		}
+		
+		
+		@Override
+		public void onResume() {
+			
+			Log.d("onResume", "onResume");
+			
+			lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
+			amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
+			lvAmigos.setAdapter(amigosAdapter);	
+			amigosAdapter.notifyDataSetChanged();
+			
+			super.onResume();
+			
 		}
 
 		@Override
@@ -412,10 +581,17 @@ public class MainActivity extends FragmentActivity {
 			TextView vrTextViewIdAmigo = (TextView)view.findViewById(R.id.txtIdAmigo);			
 			Bundle params = new Bundle();
 			params.putString("idAmigo", vrTextViewIdAmigo.getText().toString());
-			Log.d("mandando", vrTextViewIdAmigo.getText().toString());			
+			Log.d("mandando", vrTextViewIdAmigo.getText().toString());	
+			
+
 			Intent intent = new Intent(getActivity(), ActivityAmigo.class);
 			intent.putExtras(params);			
 			startActivity(intent);
+			
+			lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
+			amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
+			lvAmigos.setAdapter(amigosAdapter);
+			amigosAdapter.notifyDataSetChanged();
 
 
 		}
@@ -428,18 +604,15 @@ public class MainActivity extends FragmentActivity {
 
 		TextView txtAmigoNomeAdicionar = (TextView) findViewById(R.id.txtAmigoNomeAdicionar);
 
-		if (txtAmigoNomeAdicionar.getText().equals("")) {
-			return;
+		if (!txtAmigoNomeAdicionar.getText().toString().equals("")) {
+			Amigo amigo = new Amigo(txtAmigoNomeAdicionar.getText().toString());
+			arrayAmigos.add(amigo);
+			amigo.setIdAmigo(dataBase.addAmigo(amigo));
+
+			txtAmigoNomeAdicionar.setText("");
+		}else{
+		Toast.makeText(getBaseContext(), "Campo vazio!", Toast.LENGTH_SHORT).show();
 		}
-
-		Amigo amigo = new Amigo(txtAmigoNomeAdicionar.getText().toString());
-		arrayAmigos.add(amigo);
-		amigo.setIdAmigo(dataBase.addAmigo(amigo));
-
-		Toast.makeText(getBaseContext(), String.valueOf(amigo.getIdAmigo()), Toast.LENGTH_SHORT).show();
-
-		txtAmigoNomeAdicionar.setText("");
-
 	}
 
 	public void adicionarCoisa (View vrView) {
@@ -447,21 +620,25 @@ public class MainActivity extends FragmentActivity {
 
 		TextView txtCoisaNomeAdicionar = (TextView) findViewById(R.id.txtCoisaNomeAdicionar);
 
-		if (txtCoisaNomeAdicionar.getText().equals("")) {
-			return;
+		if (!txtCoisaNomeAdicionar.getText().toString().equals("")) {
+			Coisa coisa = new Coisa(txtCoisaNomeAdicionar.getText().toString(),new Amigo() ,TESTE_DATA);
+			coisa.setIdCoisa(dataBase.addCoisa(coisa));
+			arrayCoisas.add(coisa);
+			txtCoisaNomeAdicionar.setText("");
+		}else{
+		
+		Toast.makeText(getBaseContext(), "Campo vazio!", Toast.LENGTH_SHORT).show();
 		}
-
-		Coisa coisa = new Coisa(txtCoisaNomeAdicionar.getText().toString(),new Amigo() ,TESTE_DATA);
-		coisa.setIdCoisa(dataBase.addCoisa(coisa));
-
-		Toast.makeText(getBaseContext(), String.valueOf(coisa.getIdCoisa()), Toast.LENGTH_SHORT).show();
-
-		arrayCoisas.add(coisa);
-		txtCoisaNomeAdicionar.setText(""); 
 	}
-	//	
-	//	public void apagarCoisa (View vrView)
-	//	{
-	//		
-	//	}
+	
+	public void principalClickCoisas(View vrView)
+	{
+		mSectionsPagerAdapter.getItem(2);
+	}
+	
+	public void principalClickAmigos(View vrView)
+	{
+		mSectionsPagerAdapter.getItem(1);
+	}
+
 }
