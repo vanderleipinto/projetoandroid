@@ -13,12 +13,18 @@ import classes.SpinnerCoisasAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 
-public class ActivityAmigo extends Activity{
+public class ActivityAmigo extends FragmentActivity implements OnItemClickListener{
 	
 	DataBaseHelper dataBase = null;
 	Amigo amigo = null;
@@ -58,9 +64,18 @@ public class ActivityAmigo extends Activity{
         SpinnerCoisasAdapter coisasAdapter = new SpinnerCoisasAdapter(this, dataBase.getAllCoisa(), amigo);/// TODO Passar amigo como parametro
 		lvCoisas.setAdapter(coisasAdapter); 
 		
-	
-        
+		lvCoisas.setOnItemClickListener(this);        
 		
     }
 
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View vrView, int arg2, long arg3) {
+		Switch swStatus = (Switch) vrView.findViewById(R.id.tglbtnStatusCoisa);
+		TextView txtIdAmigo = (TextView) vrView.findViewById(R.id.spinnerIdAmigo);
+		
+		Toast.makeText(vrView.getContext(), "id amigo = " + txtIdAmigo.getText().toString() ,Toast.LENGTH_LONG).show();
+		
+	}
+
+	
 }

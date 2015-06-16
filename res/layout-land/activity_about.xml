@@ -20,8 +20,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="33dp"
         android:text="Autor: Vanderlei Pinto"
         android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
         android:textColor="#ffffff" />
@@ -30,9 +31,8 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="21dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/logo_unitins" />
 
 </RelativeLayout>

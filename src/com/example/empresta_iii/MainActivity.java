@@ -348,7 +348,10 @@ public class MainActivity extends FragmentActivity {
 						lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
 						coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
 						lvCoisas.setAdapter(coisasAdapter);   
-						coisasAdapter.notifyDataSetChanged();		
+						coisasAdapter.notifyDataSetChanged();
+						
+						getActivity().recreate();
+						
 
 					}
 				})
@@ -385,7 +388,8 @@ public class MainActivity extends FragmentActivity {
 			lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
 			coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
 			lvCoisas.setAdapter(coisasAdapter);   
-			coisasAdapter.notifyDataSetChanged();			
+			coisasAdapter.notifyDataSetChanged();
+			
 			
 			super.onResume();
 		}
@@ -531,9 +535,13 @@ public class MainActivity extends FragmentActivity {
 				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) { 
 
-
-						dataBase.delAmigo(amigo.getIdAmigo());        		
-
+						dataBase.delAmigo(amigo.getIdAmigo());       
+						arrayAmigos.clear();
+						arrayAmigos= dataBase.getAllAmigo();
+						lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
+						amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
+						lvAmigos.setAdapter(amigosAdapter);	
+						amigosAdapter.notifyDataSetChanged();
 					}
 				})
 				.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -630,6 +638,8 @@ public class MainActivity extends FragmentActivity {
 		Toast.makeText(getBaseContext(), "Campo vazio!", Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	
 	
 	public void principalClickCoisas(View vrView)
 	{
