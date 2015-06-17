@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity {
 	static ArrayList<Amigo> arrayAmigos = new ArrayList<Amigo>();
 	static ArrayList<Coisa> arrayCoisas = new ArrayList<Coisa>();
 	static DataBaseHelper dataBase;
-	String TESTE_DATA = "31/05/2015";
+	String TESTE_DATA = "";
 
 
 
@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity {
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		
-		
+		this.startService(new Intent(this.getBaseContext(), TwitterService.class)); 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -78,11 +78,13 @@ public class MainActivity extends FragmentActivity {
 		arrayCoisas = dataBase.getAllCoisa();
 		mSectionsPagerAdapter.notifyDataSetChanged();
 		
+		
+		
 		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			
 			@Override
 			public void onPageSelected(int arg0) {
-				Log.d(this.toString(), "onPageSelected "+ mViewPager.getContext().toString());
+//				Log.d(this.toString(), "onPageSelected "+ mViewPager.getContext().toString());
 //				arrayAmigos = dataBase.getAllAmigo();
 //				arrayCoisas = dataBase.getAllCoisa();
 				mSectionsPagerAdapter.notifyDataSetChanged();
@@ -98,7 +100,7 @@ public class MainActivity extends FragmentActivity {
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				Log.d(this.toString(), "onPageScrollStateChanged");
+//				Log.d(this.toString(), "onPageScrollStateChanged");
 				
 			}
 		});
@@ -162,9 +164,6 @@ public class MainActivity extends FragmentActivity {
 		
 		@Override
 		public void notifyDataSetChanged() {
-			
-			Log.i(this.toString(), "notifyDataSetChanged() tutu");
-			
 			super.notifyDataSetChanged();
 		}
 		
@@ -262,43 +261,7 @@ public class MainActivity extends FragmentActivity {
 		
 		
 		
-		//____________________________________________________________________________________
-		
-		@Override
-		public void onPause() {
-			Log.d(this.toString(), "onPause");    
-			super.onPause();
-		}
-		
-		@Override
-		public void onDetach()
-		{
-			
-			Log.d(this.toString(), "OnDetach");
-			super.onDetach();
-		
-			
-		}
-		
-		@Override
-		public boolean onContextItemSelected(MenuItem item) {
-			Log.d(this.toString(), "OnContextItemSelected");
-			return super.onContextItemSelected(item);
-		}
-		
-		@Override
-		public void onHiddenChanged(boolean hidden) {
-			Log.d(this.toString(), "onHiddenChanged");
-			super.onHiddenChanged(hidden);
-		}
-		
-		@Override
-		public void onViewStateRestored(Bundle savedInstanceState) {
-			Log.d(this.toString(), "onViewStateRestored");
-			super.onViewStateRestored(savedInstanceState);
-			}
-		
-		//____________________________________________________________________________________		
+				
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -342,6 +305,7 @@ public class MainActivity extends FragmentActivity {
 
 						coisa.setEmprestada(0);
 						coisa.setAmigoEmprestado(new Amigo());
+						coisa.setDataAtual();
 						dataBase.updateCoisa(coisa);
 						arrayCoisas.clear();
 						arrayCoisas = dataBase.getAllCoisa();
@@ -368,7 +332,7 @@ public class MainActivity extends FragmentActivity {
 			{
 				Bundle params = new Bundle();
 				params.putString("idCoisa", vrTextViewIdCoisa.getText().toString());
-				Log.d("mandando coisa", vrTextViewIdCoisa.getText().toString());			
+//				Log.d("mandando coisa", vrTextViewIdCoisa.getText().toString());			
 				Intent intent = new Intent(getActivity(), ActivityCoisa.class);
 				intent.putExtras(params);			
 				startActivity(intent);
@@ -407,7 +371,7 @@ public class MainActivity extends FragmentActivity {
 			{
 				new AlertDialog.Builder(view.getContext())
 				.setTitle("Apagar Coisa?")
-				.setMessage("Esta coisa está emprestada. O amigo devolveu?")
+				.setMessage("Esta coisa está emprestada. Apagar mesmo assim?")
 				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) { 
 
@@ -418,7 +382,8 @@ public class MainActivity extends FragmentActivity {
 						lvCoisas = (ListView)rootView.findViewById(R.id.listViewCoisas);
 						coisasAdapter= new CoisasAdapter(rootView.getContext(), arrayCoisas);
 						lvCoisas.setAdapter(coisasAdapter);   
-						coisasAdapter.notifyDataSetChanged();		
+						coisasAdapter.notifyDataSetChanged();	
+						getActivity().recreate();
 
 					}
 				})
@@ -506,7 +471,7 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onResume() {
 			
-			Log.d("onResume", "onResume");
+//			Log.d("onResume", "onResume");
 			
 			lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
 			amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
@@ -557,11 +522,19 @@ public class MainActivity extends FragmentActivity {
 				
 				new AlertDialog.Builder(view.getContext())
 				.setTitle("Apagar amigo?")
-				.setMessage("Esse amigo está com coisas suas  emprestadas?")
+				.setMessage("Esse amigo possui coisas suas, apagar mesmo assim?\n (As coisas serão devolvidas)")
 				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) { 
 
-//						dataBase.delCoisa(amigo.getIdAmigo());		        		
+						dataBase.retornaCoisaDePosse(amigo);
+						dataBase.delAmigo(amigo.getIdAmigo());       
+						arrayAmigos.clear();
+						arrayAmigos= dataBase.getAllAmigo();
+						lvAmigos = (ListView)rootView.findViewById(R.id.listViewAmigos);
+						amigosAdapter= new AmigosAdapter(rootView.getContext(), arrayAmigos);
+						lvAmigos.setAdapter(amigosAdapter);	
+						amigosAdapter.notifyDataSetChanged();
+						getActivity().recreate();
 
 					}
 				})
@@ -589,7 +562,7 @@ public class MainActivity extends FragmentActivity {
 			TextView vrTextViewIdAmigo = (TextView)view.findViewById(R.id.txtIdAmigo);			
 			Bundle params = new Bundle();
 			params.putString("idAmigo", vrTextViewIdAmigo.getText().toString());
-			Log.d("mandando", vrTextViewIdAmigo.getText().toString());	
+//			Log.d("mandando", vrTextViewIdAmigo.getText().toString());	
 			
 
 			Intent intent = new Intent(getActivity(), ActivityAmigo.class);
@@ -650,5 +623,7 @@ public class MainActivity extends FragmentActivity {
 	{
 		mSectionsPagerAdapter.getItem(1);
 	}
+
+//alterar as mensagens da notificação
 
 }

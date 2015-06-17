@@ -6,6 +6,7 @@ import com.example.empresta_iii.R;
 import classes.Coisa;
 import android.content.Context;
 import android.graphics.Color;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,18 +40,19 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 		//if (viewReciclada == null) 
 		{
 			viewReciclada = LayoutInflater.from(getContext()).inflate(R.layout.spinner_coisa , viewPai, false);
-		}
-		
+		}		
 		
 		//Obtem a referencia para os componentes da view
 		TextView vrTextViewNome = (TextView)viewReciclada.findViewById(R.id.txtSpinnerCoisa);
 		TextView vrTextViewIdAmigo = (TextView)viewReciclada.findViewById(R.id.spinnerIdAmigo);
+		
 
 		//Seta as propriedades da view
 		vrTextViewNome.setText(vrCoisa.getNome());
 		Switch vrSwitchEmprestada = (Switch)viewReciclada.findViewById(R.id.tglbtnStatusCoisa);
 		vrTextViewIdAmigo.setText(String.valueOf(vrCoisa.getAmigoEmprestado().getIdAmigo()));
 		vrSwitchEmprestada.setEnabled(true);
+		
 		
 
 		if(vrCoisa.isEmprestada()==1) // está emprestada
@@ -61,11 +63,14 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 			if(vrCoisa.getAmigoEmprestado().getIdAmigo() != amigo.getIdAmigo()){ /// está emprestada para outro amigo 
 				vrSwitchEmprestada.setEnabled(false); /// não tem como mexer aqui dentro desta view
 				vrSwitchEmprestada.setTextOn(vrCoisa.getAmigoEmprestado().getNome());
+				
+				
+				
 			}else
 			{
-				vrSwitchEmprestada.setEnabled(true);
-				
+				vrSwitchEmprestada.setEnabled(true);				
 				vrSwitchEmprestada.setTextOn(vrCoisa.getAmigoEmprestado().getNome());
+				
 			}
 		}
 
@@ -79,25 +84,22 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 //				if(listener)
 				{
 					if(isChecked)
-					{
-						
+					{						
 						if(listener)
 						{
 							vrCoisa.setEmprestada(1);
 							vrCoisa.setAmigoEmprestado(amigo);
+							vrCoisa.setDataAtual();
 							dataBase.updateCoisa(vrCoisa);
 							Toast.makeText(getContext(), "Emprestou " + vrCoisa.getNome()+" para "+ vrCoisa.getAmigoEmprestado().getNome(), Toast.LENGTH_LONG).show();
-						}
-
-						
+						}						
 					}
 					if(!isChecked) 
 					{
-
 						vrCoisa.setEmprestada(0);
 						vrCoisa.setAmigoEmprestado(new Amigo());
+						vrCoisa.setDataAtual();
 						dataBase.updateCoisa(vrCoisa);
-
 					}
 				}
 				
@@ -108,7 +110,6 @@ public class SpinnerCoisasAdapter extends ArrayAdapter<Coisa> {
 			viewReciclada.setBackgroundColor(Color.LTGRAY);
 		else
 			viewReciclada.setBackgroundColor(Color.WHITE);
-
 
 		listener = true;
 		return viewReciclada;

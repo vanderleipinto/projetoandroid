@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="50dp"
     android:orientation="horizontal" 
     android:background="@drawable/backgroundthings"
     >
@@ -18,7 +18,7 @@
         android:id="@+id/txtNomeAmigo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Space1"
+        
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txtNomeAmigo"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="46dp"
+        android:layout_marginRight="60dp"
         android:text="0" />
 
 </RelativeLayout>

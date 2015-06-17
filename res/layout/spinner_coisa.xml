@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        
+        android:maxWidth="200dp"
+        android:switchMinWidth="200dp"
         android:checked="false"
         android:textOff="Comigo"
         android:textOn="Emprestado"
@@ -33,6 +34,26 @@
         android:layout_alignParentTop="true"
         android:text=""
         android:visibility="invisible"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/spinnerEmprestadoEm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tglbtnStatusCoisa"
+        android:text="Emprestado em:"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/spinnerDataEmprestado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/spinnerEmprestadoEm"
+        android:layout_alignBottom="@+id/spinnerEmprestadoEm"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="14dp"
+        android:text="999/99/9999"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

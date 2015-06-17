@@ -16,15 +16,15 @@
             android:id="@+id/txtListaDeCoisas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lista de coisas" />
+            android:text="Nome" />
 
         <TextView
             android:id="@+id/txtLblStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-        	android:layout_marginLeft="230dp"
+            android:layout_marginRight="40dp"
             android:text="Status" />
 
         </RelativeLayout>
@@ -56,6 +56,7 @@
             android:layout_centerVertical="true"            
             android:layout_toLeftOf="@+id/btnAdicionarCoisa"
             android:hint="Adicionar Coisa"
+            android:textColorHint="#00aced"
             android:ems="10" />
 
     </RelativeLayout>

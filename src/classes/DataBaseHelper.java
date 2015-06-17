@@ -1,6 +1,11 @@
 package classes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +13,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.ParseException;
 import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -52,7 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	// creating required tables
         db.execSQL(CREATE_TABLE_AMIGO);
         db.execSQL(CREATE_TABLE_COISA);
-        Log.d("CRIA COISA", CREATE_TABLE_COISA); 
+//        Log.d("CRIA COISA", CREATE_TABLE_COISA); 
     }
     
     @Override
@@ -75,7 +81,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // insert row
         long idAmigo = db.insert(TABLE_AMIGO, null, values);
         
-        Log.d("inseriu amigo na posição", String.valueOf(idAmigo)+ amigo.getNome());
+//        Log.d("inseriu amigo na posição", String.valueOf(idAmigo)+ amigo.getNome());
      
         return idAmigo;
     }
@@ -84,7 +90,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_AMIGO, KEY_ID_AMIGO + " = ?", new String[] { String.valueOf(id) });
         
-        Log.d("delAmigo ok ", "Deletou o amigo" + String.valueOf(id));
+//        Log.d("delAmigo ok ", "Deletou o amigo" + String.valueOf(id));
         
         // TODO delObjetivoSemana(id); verificar se o amigo tem coisas com ele
     }
@@ -98,17 +104,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		}
 	    String selectQuery = "SELECT  * FROM " + TABLE_AMIGO + " WHERE " + KEY_ID_AMIGO + " = " + id;
 	
-	    Log.e(LOG, selectQuery);
+//	    Log.e(LOG, selectQuery);
 	
 	    Cursor c = db.rawQuery(selectQuery, null);
 	
 	    if (c != null && c.moveToFirst())
 	    {
-	    	Log.d("getOneAmigo ok ", "Buscou o amigo" + String.valueOf(id));
+//	    	Log.d("getOneAmigo ok ", "Buscou o amigo" + String.valueOf(id));
 	    	return CreateAmigo(c);
 	    }
 	    	
-	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
+//	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
 	    return null;
 	}
 
@@ -154,7 +160,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	    // insert row
 	    long idCoisa = db.insert(TABLE_COISA, null, values);
 	    
-	    Log.d("inseriu coisa na posição", String.valueOf(idCoisa));
+//	    Log.d("inseriu coisa na posição", String.valueOf(idCoisa));
 	
 	    return idCoisa;
 	}
@@ -163,7 +169,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	    SQLiteDatabase db = this.getWritableDatabase();
 	    db.delete(TABLE_COISA, KEY_ID_COISA + " = ?", new String[] { String.valueOf(id_coisa) });
 	    
-	    Log.d("Deletou Coisa", String.valueOf(id_coisa));
+//	    Log.d("Deletou Coisa", String.valueOf(id_coisa));
 	    
 	}
 
@@ -180,11 +186,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	
 	    if (c != null && c.moveToFirst())
 	    {
-	    	Log.d("getOneCoisa ok ", "Buscou o coisa" + String.valueOf(id));
+//	    	Log.d("getOneCoisa ok ", "Buscou o coisa" + String.valueOf(id));
 	    	return CreateCoisa(c);
 	    }
 	    	
-	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
+//	    Log.d("getOneAmigo falhou ", "Não Buscou o amigo" + String.valueOf(id));
 	    return null;
 	}
 
@@ -192,7 +198,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		ArrayList<Coisa> objs = new ArrayList<Coisa>();
 	    String selectQuery = "SELECT  * FROM " + TABLE_COISA + " ORDER BY " + KEY_NOME_COISA;
 	
-	    Log.e(LOG, selectQuery);
+//	    Log.e(LOG, selectQuery);
 	
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    Cursor c = db.rawQuery(selectQuery, null);
@@ -257,7 +263,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	ArrayList<Coisa> objs = new ArrayList<Coisa>();
         String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_COISA_IDAMIGO + " = " + amigo.getIdAmigo()+ " ORDER BY " + KEY_NOME_COISA ;
      
-        Log.e(LOG, selectQuery);
+//        Log.e(LOG, selectQuery);
      
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -275,7 +281,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	List<Coisa> objs = new ArrayList<Coisa>();
         String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_EMPRESTADA + " = 1" + " ORDER BY " + KEY_NOME_COISA ;
      
-        Log.e(LOG, selectQuery);
+//        Log.e(LOG, selectQuery);
      
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -293,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	List<Coisa> objs = new ArrayList<Coisa>();
         String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_EMPRESTADA + " = 0" + " ORDER BY " + KEY_NOME_COISA ;
      
-        Log.e(LOG, selectQuery);
+//        Log.e(LOG, selectQuery);
      
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -305,6 +311,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         return objs;
+    }
+    
+    public void retornaCoisaDePosse(Amigo amigo){
+    	List<Coisa> objs = new ArrayList<Coisa>();
+        String selectQuery = "SELECT  * FROM " + TABLE_COISA + " WHERE " + KEY_COISA_IDAMIGO + " = " + amigo.getIdAmigo() ;
+     
+//        Log.e(LOG, selectQuery);
+     
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+     
+        if (c.moveToFirst()) {
+           do {
+               objs.add(CreateCoisa(c));
+           } while (c.moveToNext());
+        }
+        
+        for(Coisa coisa : objs)
+        {
+        	coisa.setAmigoEmprestado(new Amigo());
+        	coisa.setEmprestada(0);
+        	coisa.setDataAtual();
+        	this.updateCoisa(coisa);
+        }
+//       Log.e(LOG, selectQuery); 
     }
     
  public int getNumCoisasEmprestadasAmigo(Amigo amigo){
@@ -324,7 +355,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      SQLiteDatabase db = this.getReadableDatabase();
      int numRows = (int) DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_COISA +" WHERE "+KEY_EMPRESTADA+" = 1", null);
      
-     Log.i("numero de coisas emprestadas", "total emprestadas = " + numRows);
+//     Log.i("numero de coisas emprestadas", "total emprestadas = " + numRows);
   
      
      return numRows;
@@ -355,7 +386,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      return list.size();
  }
  
- 
+// private String Calendario(int diasDiferenca, int dia, int mes, int ano) {
+//		SimpleDateFormat formatter;
+//
+//		formatter = new SimpleDateFormat("dd/MM/yyyy");
+//		String d = null;
+//
+//		GregorianCalendar cal = new GregorianCalendar(ano, mes - 1, dia);
+//
+//		cal.add(Calendar.DAY_OF_MONTH, diasDiferenca);
+//
+//		Date futuro = cal.getTime();
+//		// formata a data
+//		try {
+//			d = formatter.format(futuro);// user entry date
+//
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return d + "";
+//	}
     
 //int numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM table_name", null);
 //    

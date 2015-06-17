@@ -33,6 +33,8 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			TextView vrTextViewNome = (TextView)viewReciclada.findViewById(R.id.txtCoisa);
 			TextView vrTextViewEmprestada = (TextView)viewReciclada.findViewById(R.id.txtStatusCoisa);
 			TextView vrTextIdCoisa = (TextView) viewReciclada.findViewById(R.id.txtIdCoisa);
+			TextView txtDataEmprestimo = (TextView)viewReciclada.findViewById(R.id.txtDataEmprestimo);
+			TextView txtlblEmprestadoEm = (TextView)viewReciclada.findViewById(R.id.txtlblEmprestadoEm);
 			
 			//Seta as propriedades da view
 			vrTextViewNome.setText(vrCoisa.getNome());
@@ -40,17 +42,22 @@ public class CoisasAdapter extends ArrayAdapter<Coisa> {
 			if (vrCoisa.isEmprestada()==1) {
 				vrTextViewEmprestada.setText(vrCoisa.getAmigoEmprestado().getNome());
 				vrTextViewEmprestada.setTextColor(Color.rgb(168, 36, 0));
+				txtDataEmprestimo.setText(vrCoisa.getDate());
+				txtlblEmprestadoEm.setText("Emprestado em:");
+				
+				
 			}else
 			{
 				vrTextViewEmprestada.setText("Comigo");
 				vrTextViewEmprestada.setTextColor(Color.rgb(16, 123, 17));
+				txtDataEmprestimo.setVisibility(View.INVISIBLE);
+				txtlblEmprestadoEm.setVisibility(View.INVISIBLE);				
 			}
 			
 			if (indice % 2 == 0)
 				viewReciclada.setBackgroundColor(Color.LTGRAY);
 			else
-				viewReciclada.setBackgroundColor(Color.WHITE);
-			
+				viewReciclada.setBackgroundColor(Color.WHITE);			
 			
 			
 			return viewReciclada;

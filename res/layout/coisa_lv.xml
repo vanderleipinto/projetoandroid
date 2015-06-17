@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="50dp"
     android:orientation="vertical" >
 
     <TextView
@@ -11,15 +11,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="nome da coisa" />
+        android:layout_marginRight="10dp"
+        android:text="nome da coisa"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+         />
 
     <TextView
         android:id="@+id/txtStatusCoisa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="230dp"
+        android:layout_marginRight="30dp"
         android:text="Emprestado" />
 
     <TextView
@@ -32,5 +35,26 @@
         android:text=""        
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txtlblEmprestadoEm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtCoisa"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Emprestado em:" />
+
+    <TextView
+        android:id="@+id/txtDataEmprestimo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtlblEmprestadoEm"
+        android:layout_alignBottom="@+id/txtlblEmprestadoEm"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
+        android:text="99/99/9999"
+        
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
