@@ -35,7 +35,7 @@ public final class R {
         public static final int LinearLayout1=0x7f080012;
         public static final int RelativeLayout1=0x7f080000;
         public static final int TextView01=0x7f080017;
-        public static final int action_settings=0x7f080028;
+        public static final int action_settings=0x7f080026;
         public static final int btnAdicionarAmigo=0x7f08001d;
         public static final int btnAdicionarCoisa=0x7f080021;
         public static final int imageView1=0x7f080003;
@@ -50,8 +50,6 @@ public final class R {
         public static final int pager=0x7f080008;
         public static final int pager_title_strip=0x7f080009;
         public static final int relativeLayout1=0x7f080013;
-        public static final int spinnerDataEmprestado=0x7f080027;
-        public static final int spinnerEmprestadoEm=0x7f080026;
         public static final int spinnerIdAmigo=0x7f080025;
         public static final int textView1=0x7f080001;
         public static final int textView2=0x7f080002;
