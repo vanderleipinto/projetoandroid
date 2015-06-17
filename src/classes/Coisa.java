@@ -43,8 +43,8 @@ public class Coisa {
 		this.emprestada = 0;		
 		Date data = new Date();
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		this.date = this.stringToDate("10/05/2013");
-//		this.date = this.stringToDate(df.format(data));
+//		this.date = this.stringToDate("10/05/2013");
+		this.date = this.stringToDate(df.format(data));
 		
 	}
 

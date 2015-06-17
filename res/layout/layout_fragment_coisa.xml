@@ -57,6 +57,8 @@
             android:layout_toLeftOf="@+id/btnAdicionarCoisa"
             android:hint="Adicionar Coisa"
             android:textColorHint="#00aced"
+            android:maxLength="60" 
+    		android:ellipsize="end"
             android:ems="10" />
 
     </RelativeLayout>

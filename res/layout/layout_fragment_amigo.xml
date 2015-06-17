@@ -13,7 +13,7 @@
         <TextView
             android:id="@+id/txtLblListaDeAmigos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content"            
             android:text="Nome" />
 
         <TextView
@@ -45,6 +45,8 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/btnAdicionarAmigo"
             android:ems="10"
+            android:maxLength="60" 
+    		android:ellipsize="end"
             android:hint="Adicionar Amigo"
             android:textColorHint="#00aced" />
 

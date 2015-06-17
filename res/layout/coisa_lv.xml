@@ -23,6 +23,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="30dp"
+        android:maxLength="24"
         android:text="Emprestado" />
 
     <TextView

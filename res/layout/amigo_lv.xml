@@ -18,7 +18,8 @@
         android:id="@+id/txtNomeAmigo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        
+        android:maxLength="24" 
+   		android:ellipsize="marquee"        
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
